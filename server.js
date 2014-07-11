@@ -28,17 +28,17 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 
 // domain routes
 server.get(RESOURCES.DOMAINS, function (req, res, next) {
-    if (!req.user) { res.sendUnauthorized(); }
+    //if (!req.user) { res.sendUnauthorized(); }
     // return all domains
-    res.send({path: "domains"});
+    res.send({p: "domains"});
     next();
 });
 
 // records routes
 server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
-    if (!req.user) { res.sendUnauthorized(); }
+    //if (!req.user) { res.sendUnauthorized(); }
     // return all records of domain
-    res.send({path: "domains/(domain)/records"});
+    res.send({p: "domains/(domain)/records"});
     next();
 });
 

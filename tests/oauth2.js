@@ -40,4 +40,4 @@ suite.use("localhost", 8080).discuss("With no authorization header").get("/domai
     return accessToken;
 }).undiscuss().discuss("with invalid client credentials").setHeader("Authorization", "Basic MTIzOjQ1Ng==").setHeader("Content-Type", "application/json").get().expect(401).expect("should respond with error: invalid_client", function (err, res, body) {
     return JSON.parse(body).should.have.property("code", "UnauthorizedError");
-}).undiscuss().unpath().next().get("/domains").expect(200).next()["export"](module);
+}).undiscuss().unpath().next().setHeader("Content-Type", "application/json").get("/domains").expect(200).next()["export"](module);

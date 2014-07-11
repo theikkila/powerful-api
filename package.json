@@ -25,7 +25,8 @@
     "lodash": "^2.4.1",
     "pdns": "^0.2.1",
     "restify": "^2.8.1",
-    "restify-oauth2-cc": "^2.1.8"
+    "restify-oauth2-cc": "^2.1.8",
+    "validator": "^3.16.1"
   },
   "devDependencies": {
     "api-easy": "^0.3.8",

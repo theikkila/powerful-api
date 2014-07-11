@@ -9,6 +9,9 @@ var oauthHooks = require('./lib/oauth_hooks');
 // Config
 var config = require('./config');
 
+// PDNS
+var pdns = require('pdns')(config.pdns);
+
 // API Paths
 var RESOURCES = require('./lib/api_paths');
 
@@ -27,18 +30,35 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 // Routes
 
 // domain routes
+
+// return all domains
 server.get(RESOURCES.DOMAINS, function (req, res, next) {
-    //if (!req.user) { res.sendUnauthorized(); }
-    // return all domains
-    res.send({p: "domains"});
-    next();
+    // Uncomment for authorization
+    console.log("GET " + RESOURCES.DOMAINS);
+    if (!req.user) { res.sendUnauthorized(); }
+    //res.send({err: null, domains: {}}); 
+    pdns.domains.list({}, {}, function (err, domains) {
+        /*
+        * This is hack agains weird bug when using testing script (oauth2.js) restify "sends" headers and prevents actual data to be sent
+        * This don't happen with browser or curl
+        */
+        if (res.headersSent) {
+            res.end({err: err, domains: domains});
+        } else {
+            res.send({err: err, domains: domains});
+        }
+        return next();
+    });
 });
+
 
 // records routes
 server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
-    //if (!req.user) { res.sendUnauthorized(); }
+    // Uncomment for authorization
+    if (!req.user) { res.sendUnauthorized(); }
+
     // return all records of domain
-    res.send({p: "domains/(domain)/records"});
+    res.send({p: "domains/" + req.params.domainid + "/records"});
     next();
 });
 

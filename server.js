@@ -24,14 +24,26 @@ server.use(restify.authorizationParser());
 server.use(restify.bodyParser({mapParams: false}));
 oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 
+// Routes
 
-server.get(RESOURCES.DOMAIN, function (req, res, next) {
+// domain routes
+server.get(RESOURCES.DOMAINS, function (req, res, next) {
     if (!req.user) { res.sendUnauthorized(); }
-    res.send({status: "clear!"});
+    // return all domains
+    res.send({path: "domains"});
     next();
 });
-//server.head('/hello/:name', respond);
 
+// records routes
+server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
+    if (!req.user) { res.sendUnauthorized(); }
+    // return all records of domain
+    res.send({path: "domains/(domain)/records"});
+    next();
+});
+
+
+// Server start
 server.listen(config.port, function () {
     console.log('%s listening at %s', server.name, server.url);
 });

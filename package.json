@@ -22,7 +22,13 @@
   },
   "homepage": "https://github.com/theikkila/powerful-api",
   "dependencies": {
+    "lodash": "^2.4.1",
     "pdns": "^0.2.1",
-    "restify": "^2.8.1"
+    "restify": "^2.8.1",
+    "restify-oauth2-cc": "^2.1.8"
+  },
+  "devDependencies": {
+    "api-easy": "^0.3.8",
+    "chai": "^1.9.1"
   }
 }

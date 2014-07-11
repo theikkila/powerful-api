@@ -27,39 +27,57 @@ server.use(restify.authorizationParser());
 server.use(restify.bodyParser({mapParams: false}));
 oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 
+
+// Authorization middleware
+server.use(function (req, res, next) {
+    // Un/comment for authorization
+    if (req.path !== RESOURCES.TOKEN && !req.user) { res.sendUnauthorized(); }
+    return next();
+});
+
 // Routes
 
 // domain routes
 
-// return all domains
+// return all domains (READ)
 server.get(RESOURCES.DOMAINS, function (req, res, next) {
-    // Uncomment for authorization
-    console.log("GET " + RESOURCES.DOMAINS);
-    if (!req.user) { res.sendUnauthorized(); }
-    //res.send({err: null, domains: {}}); 
     pdns.domains.list({}, {}, function (err, domains) {
+        if (err) { return next(err); }
         /*
         * This is hack agains weird bug when using testing script (oauth2.js) restify "sends" headers and prevents actual data to be sent
         * This don't happen with browser or curl
         */
         if (res.headersSent) {
-            res.end({err: err, domains: domains});
+            res.end(domains);
         } else {
-            res.send({err: err, domains: domains});
+            res.send(domains);
         }
         return next();
     });
 });
 
+// create new domain (CREATE)
+server.post(RESOURCES.DOMAINS, function (req, res, next) {
+    return next();
+});
+
+// return specific domain (READ)
+server.get(RESOURCES.DOMAINS + '/:domainid', function (req, res, next) {
+    return next();
+});
 
 // records routes
-server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
-    // Uncomment for authorization
-    if (!req.user) { res.sendUnauthorized(); }
 
+// return all records of domain (READ)
+server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
     // return all records of domain
     res.send({p: "domains/" + req.params.domainid + "/records"});
-    next();
+    return next();
+});
+
+// create new record for domain (CREATE)
+server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
+    return next();
 });
 
 

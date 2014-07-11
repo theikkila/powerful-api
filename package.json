@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/theikkila/powerful-api/issues"
   },
-  "homepage": "https://github.com/theikkila/powerful-api"
+  "homepage": "https://github.com/theikkila/powerful-api",
+  "dependencies": {
+    "pdns": "^0.2.1",
+    "restify": "^2.8.1"
+  }
 }

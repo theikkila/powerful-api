@@ -104,3 +104,24 @@ Return all records of domain in json-array
   }
 ]
 ```
+
+#### POST /domains/(domainname)/records
+Create a new record
+`GET /domains/example.com/records`
+
+**REQUEST WITH PAYLOAD**
+```json
+{
+  "name":"server1",
+  "type":"A", // Supports all PowerDNS record types
+  "content":"192.168.1.2",
+  "ttl": "10800" // default: 10800
+}
+```
+
+**RESPONSE**
+```json
+{
+    "A": 1
+}
+```

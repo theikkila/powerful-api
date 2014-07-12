@@ -3,18 +3,25 @@
 var restify = require('restify');
 var oauth2 = require('restify-oauth2-cc');
 
+
 // oauth2 hooks
 var oauthHooks = require('./lib/oauth_hooks');
 
 // Config
 var config = require('./config');
 
+var utils = require('./lib/utils');
+
 // PDNS
 var pdns = require('pdns')(config.pdns);
 
 // API Paths
-var RESOURCES = require('./lib/api_paths');
+var api_static = require('./lib/api_static');
+var RESOURCES = api_static.resources;
 
+// Routes
+var domains = require('./routes/domains');
+var records = require('./routes/records');
 
 
 // Init
@@ -37,48 +44,27 @@ server.use(function (req, res, next) {
 
 // Routes
 
-// domain routes
-
 // return all domains (READ)
-server.get(RESOURCES.DOMAINS, function (req, res, next) {
-    pdns.domains.list({}, {}, function (err, domains) {
-        if (err) { return next(err); }
-        /*
-        * This is hack agains weird bug when using testing script (oauth2.js) restify "sends" headers and prevents actual data to be sent
-        * This don't happen with browser or curl
-        */
-        if (res.headersSent) {
-            res.end(domains);
-        } else {
-            res.send(domains);
-        }
-        return next();
-    });
-});
-
-// create new domain (CREATE)
-server.post(RESOURCES.DOMAINS, function (req, res, next) {
-    return next();
-});
-
+server.get(RESOURCES.DOMAINS, domains.all);
 // return specific domain (READ)
-server.get(RESOURCES.DOMAINS + '/:domainid', function (req, res, next) {
-    return next();
-});
+server.get(RESOURCES.DOMAINS + '/:domainid', domains.one);
+// create new domain (CREATE)
+server.post(RESOURCES.DOMAINS, domains.create);
+// update domain (UPDATE)
+server.post(RESOURCES.DOMAINS + '/:domainid', domains.update);
+// delete domain (DELETE)
+server.del(RESOURCES.DOMAINS + '/:domainid', domains.delete);
 
-// records routes
+
 
 // return all records of domain (READ)
-server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
-    // return all records of domain
-    res.send({p: "domains/" + req.params.domainid + "/records"});
-    return next();
-});
-
+server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, records.read);
 // create new record for domain (CREATE)
-server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, function (req, res, next) {
-    return next();
-});
+server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, records.create);
+// update record for domain (UPDATE)
+server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS + '/:recordid', records.update);
+// update record for domain (DELETE)
+server.del(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS + '/:recordid', records.delete);
 
 
 // Server start

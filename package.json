@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/theikkila/powerful-api",
   "dependencies": {
+    "async": "^0.9.0",
+    "dateformat": "^1.0.8-1.2.3",
     "lodash": "^2.4.1",
     "pdns": "^0.2.1",
     "restify": "^2.8.1",

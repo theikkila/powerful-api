@@ -12,9 +12,6 @@ var config = require('./config');
 
 var utils = require('./lib/utils');
 
-// PDNS
-var pdns = require('pdns')(config.pdns);
-
 // API Paths
 var api_static = require('./lib/api_static');
 var RESOURCES = api_static.resources;
@@ -38,7 +35,7 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 // Authorization middleware
 server.use(function (req, res, next) {
     // Un/comment for authorization
-    if (req.path !== RESOURCES.TOKEN && !req.user) { res.sendUnauthorized(); }
+    //if (req.path !== RESOURCES.TOKEN && !req.user) { res.sendUnauthorized(); }
     return next();
 });
 
@@ -46,8 +43,6 @@ server.use(function (req, res, next) {
 
 // return all domains (READ)
 server.get(RESOURCES.DOMAINS, domains.all);
-// return specific domain (READ)
-server.get(RESOURCES.DOMAINS + '/:domainid', domains.one);
 // create new domain (CREATE)
 server.post(RESOURCES.DOMAINS, domains.create);
 // update domain (UPDATE)
@@ -58,13 +53,13 @@ server.del(RESOURCES.DOMAINS + '/:domainid', domains.delete);
 
 
 // return all records of domain (READ)
-server.get(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, records.read);
+server.get(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS, records.read);
 // create new record for domain (CREATE)
-server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS, records.create);
+server.post(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS, records.create);
 // update record for domain (UPDATE)
-server.post(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS + '/:recordid', records.update);
+server.post(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS + '/:recordid', records.update);
 // update record for domain (DELETE)
-server.del(RESOURCES.DOMAINS + '/:domainid' + RESOURCES.RECORDS + '/:recordid', records.delete);
+server.del(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS + '/:recordid', records.delete);
 
 
 // Server start

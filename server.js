@@ -35,6 +35,7 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 // Authorization middleware
 server.use(function (req, res, next) {
     // Un/comment for authorization
+    //return next();
     if (req.path !== RESOURCES.TOKEN && !req.user) {
         res.sendUnauthorized();
     } else {

@@ -25,7 +25,7 @@
     "async": "^0.9.0",
     "dateformat": "^1.0.8-1.2.3",
     "lodash": "^2.4.1",
-    "pdns": "^0.2.1",
+    "pdns": "git://github.com/theikkila/node-pdns.git",
     "restify": "^2.8.1",
     "restify-oauth2-cc": "^2.1.8",
     "validator": "^3.16.1"

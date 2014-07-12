@@ -68,6 +68,10 @@ module.exports.update = function (req, res, next) {
 
 // delete
 module.exports.delete = function (req, res, next) {
-    res.send("delete");
-    return next();
+    var domain = (validator.matches(req.params.domainname, api_static.regexps.fqdn)) ? req.params.domainname : (function () { throw new Error("Domain is required and must be FQDN"); }());
+    pdns.records.removeById(domain, {id: req.params.recordid}, {}, function (err, result) {
+        if (err) { throw new Error(err); }
+        res.send({record: result.affectedRows});
+        return next();
+    });
 };

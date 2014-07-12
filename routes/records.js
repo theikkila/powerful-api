@@ -10,6 +10,7 @@ module.exports.read = function (req, res, next) {
     // return all records of domain
     var domain = (validator.matches(req.params.domainname, api_static.regexps.fqdn)) ? req.params.domainname : (function () { throw new Error("Domain is must be FQDN"); }());
     pdns.records.list(domain, {}, {}, function (err, records) {
+        if (err) { throw new Error(err); }
         res.send(records);
         return next();
     });

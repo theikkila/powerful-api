@@ -46,9 +46,9 @@ server.get(RESOURCES.DOMAINS, domains.all);
 // create new domain (CREATE)
 server.post(RESOURCES.DOMAINS, domains.create);
 // update domain (UPDATE)
-server.post(RESOURCES.DOMAINS + '/:domainid', domains.update);
+server.post(RESOURCES.DOMAINS + '/:domainname', domains.update);
 // delete domain (DELETE)
-server.del(RESOURCES.DOMAINS + '/:domainid', domains.delete);
+server.del(RESOURCES.DOMAINS + '/:domainname', domains.delete);
 
 
 

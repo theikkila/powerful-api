@@ -95,6 +95,11 @@ module.exports.create = function (req, res, next) {
 
 // Delete
 module.exports.delete = function (req, res, next) {
-    res.send("delete");
-    return next();
+    // Domain validation
+    var domain = (validator.matches(req.params.domainname, api_static.regexps.fqdn)) ? req.params.domainname : (function () { throw new Error("Domain is required and must be FQDN"); }());
+    pdns.domains.remove({name: domain}, {}, function (err, res) {
+        if (err) { throw new Error(err); }
+        res.send({domain: 1});
+        return next();
+    });
 };

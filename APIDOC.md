@@ -5,7 +5,7 @@ Api documentation
 
 Return all domains in json-array
 
-```
+```json
 [
   {
     "id":1,
@@ -50,7 +50,7 @@ Create a new domain
 ```
 **RESPONSE**
 As how many records/domains created
-```
+```json
 {
     "domain": 1,
     "ns": 4

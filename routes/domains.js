@@ -93,12 +93,6 @@ module.exports.create = function (req, res, next) {
     });
 };
 
-// Update
-module.exports.update = function (req, res, next) {
-    res.send("update");
-    return next();
-};
-
 // Delete
 module.exports.delete = function (req, res, next) {
     res.send("delete");

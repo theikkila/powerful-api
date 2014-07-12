@@ -45,8 +45,6 @@ server.use(function (req, res, next) {
 server.get(RESOURCES.DOMAINS, domains.all);
 // create new domain (CREATE)
 server.post(RESOURCES.DOMAINS, domains.create);
-// update domain (UPDATE)
-server.post(RESOURCES.DOMAINS + '/:domainname', domains.update);
 // delete domain (DELETE)
 server.del(RESOURCES.DOMAINS + '/:domainname', domains.delete);
 

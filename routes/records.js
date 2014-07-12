@@ -18,8 +18,30 @@ module.exports.read = function (req, res, next) {
 
 // create
 module.exports.create = function (req, res, next) {
-    res.send("create");
-    return next();
+    var domain = (validator.matches(req.params.domainname, api_static.regexps.fqdn)) ? req.params.domainname : (function () { throw new Error("Domain is must be FQDN"); }());
+    // validating
+    var name = (validator.matches(req.body.name, api_static.regexps.fqdn)) ? req.body.name : (function () { throw new Error("Record name must be valid"); }());
+    var type = (validator.matches(req.body.type.toUpperCase(), api_static.regexps.recordtype)) ? req.body.type : (function () { throw new Error("Record type must be supported by PoweDNS"); }());
+    var content = "";
+    // ToDo: get the default ttl from config
+    var ttl = (validator.isNumeric(req.body.ttl)) ? req.body.ttl : "10800";
+    if (type === "A") {
+        content = (validator.isIP(req.body.content, 4)) ? req.body.content : (function () { throw new Error("Not a valid IPv4 IP"); }());
+    } else if (type === "AAAA") {
+        content = (validator.isIP(req.body.content, 6)) ? req.body.content : (function () { throw new Error("Not a valid IPv6 IP"); }());
+    } else if (new RegExp("/(MX|PTR|NS|CNAME)/i").test(type)) {
+        content = (validator.matches(req.body.content, api_static.regexps.fqdn)) ? req.body.content : (function () { throw new Error("Record content must be valid"); }());
+    } else {
+        content = req.body.content;
+    }
+    // Add record to database
+    pdns.records.add(domain, {name: name, type: type, content: content, ttl: ttl}, {}, function (err, retr) {
+        if (err) { throw new Error(err); }
+        var ret = {};
+        ret[type] = 1;
+        res.send(ret);
+        return next();
+    });
 };
 
 // update

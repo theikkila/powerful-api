@@ -35,14 +35,14 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 // Authorization middleware
 server.use(function (req, res, next) {
     // Un/comment for authorization
-    //if (req.path !== RESOURCES.TOKEN && !req.user) { res.sendUnauthorized(); }
+    if (req.path !== RESOURCES.TOKEN && !req.user) { res.sendUnauthorized(); }
     return next();
 });
 
 // Routes
 
 // return all domains (READ)
-server.get(RESOURCES.DOMAINS, domains.all);
+server.get(RESOURCES.DOMAINS, domains.read);
 // create new domain (CREATE)
 server.post(RESOURCES.DOMAINS, domains.create);
 // delete domain (DELETE)

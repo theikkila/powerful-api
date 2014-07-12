@@ -11,7 +11,7 @@ var api_static = require('../lib/api_static');
 
 
 // Read (all)
-module.exports.all = function (req, res, next) {
+module.exports.read = function (req, res, next) {
     pdns.domains.list({}, {}, function (err, domains) {
         if (err) { return next(err); }
         /*
@@ -25,11 +25,6 @@ module.exports.all = function (req, res, next) {
         }
         return next();
     });
-};
-
-// Read (one)
-module.exports.one = function (req, res, next) {
-    return next();
 };
 
 // Create

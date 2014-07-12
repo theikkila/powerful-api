@@ -1,10 +1,18 @@
-
+// Config
+var config = require('../config');
+// Deps
+var validator = require('validator');
+var api_static = require('../lib/api_static');
+var pdns = require('pdns')(config.pdns);
 
 // read
 module.exports.read = function (req, res, next) {
     // return all records of domain
-    res.send({p: "domains/" + req.params.domainid + "/records"});
-    return next();
+    var domain = (validator.matches(req.params.domainname, api_static.regexps.fqdn)) ? req.params.domainname : (function () { throw new Error("Domain is must be FQDN"); }());
+    pdns.records.list(domain, {}, {}, function (err, records) {
+        res.send(records);
+        return next();
+    });
 };
 
 // create

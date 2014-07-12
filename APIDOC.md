@@ -3,7 +3,7 @@ Api documentation
 
 #### GET /domains
 
-Return all domains in json-array
+Read all domains in json-array
 
 ```json
 [
@@ -57,10 +57,22 @@ As how many records/domains created
 }
 ```
 
+#### DELETE /domains/(domainname)
+
+Delete domain
+
+`DELETE /domains/example.com/records`
+
+```json
+{
+    "domain": 1
+}
+```
+
 
 #### GET /domains/(domainname)/records
 
-Return all records of domain in json-array  
+Read all records of domain in json-array  
 `GET /domains/example.com/records`
 
 
@@ -123,5 +135,37 @@ Create a new record
 ```json
 {
     "A": 1
+}
+```
+
+#### POST /domains/(domainname)/records/(recordid)
+Update record
+`POST /domains/example.com/records/15`
+
+**REQUEST WITH PAYLOAD**
+```json
+{
+  "name":"server1", // required
+  "content":"192.168.1.2", // required
+  "ttl": "10800" // optional default: 10800
+}
+```
+
+**RESPONSE**
+```json
+{
+    "A": 1
+}
+```
+
+#### DELETE /domains/(domainname)/records/(recordid)
+
+Delete record
+
+`DELETE /domains/example.com/records/15`
+
+```json
+{
+    "record": 1
 }
 ```

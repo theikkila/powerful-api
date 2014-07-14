@@ -20,4 +20,7 @@ Uses:
 Go to [documentation](https://github.com/theikkila/powerful-api/blob/master/APIDOC.md)
 
 
+## ToDo
 
+- Better documentation
+- Implement stats-api

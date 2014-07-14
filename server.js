@@ -19,7 +19,7 @@ var RESOURCES = api_static.resources;
 // Routes
 var domains = require('./routes/domains');
 var records = require('./routes/records');
-
+var stats = require('./routes/stats');
 
 // Init
 var server = restify.createServer({
@@ -35,7 +35,7 @@ oauth2.cc(server, {endpoint: RESOURCES.TOKEN, hooks: oauthHooks});
 // Authorization middleware
 server.use(function (req, res, next) {
     // Un/comment for authorization
-    //return next();
+    // return next();
     if (req.path !== RESOURCES.TOKEN && !req.user) {
         res.sendUnauthorized();
     } else {
@@ -63,6 +63,8 @@ server.post(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS + '/:recordid
 // update record for domain (DELETE)
 server.del(RESOURCES.DOMAINS + '/:domainname' + RESOURCES.RECORDS + '/:recordid', records.delete);
 
+// Stats
+server.get(RESOURCES.STATS, stats.read);
 
 // Server start
 server.listen(config.port, function () {
